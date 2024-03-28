@@ -1,0 +1,5 @@
+#save this with your values as .env
+WATT_TIME_USERNAME=
+WATT_TIME_PASSWORD=
+WATT_TIME_EMAIL=
+WATT_TIME_ORG=

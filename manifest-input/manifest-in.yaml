@@ -58,13 +58,13 @@ initialize:
         allow-padding: true
 tree:
   pipeline:
-    - mock-observations
-    - group-by
-    - time-sync
-    - cloud-metadata
-    - watttime
-    - teads-curve
-    - operational-carbon
+    - mock-observations #provides sample usage data from a given geographic region with a simulated cpu / memory utilization.
+    - group-by #groups inputs, in this case cloud and region
+    - time-sync #standardizes the time format of observations
+    - cloud-metadata #determine an instance's physical processor and thermal design power (TDP) based on its instance name (cloud vendor e.g. aws and instance type e.g. m5.large)
+    - watttime #determine the carbon intensity of the grid based on the region (e.g. CAISO)
+    - teads-curve #estimating CPU usages across varying type of CPUs using a Teads Curve (requires CPU TDP, Utilization, and Duration)
+    - operational-carbon #combines two or more elements in an array, in this case energy in kWH and grid carbon intensity)
   defaults:
   config:
     group-by:
