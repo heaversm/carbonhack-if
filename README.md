@@ -1,6 +1,6 @@
 # Impact Framework
 
-[![How to use the Impact Framework from the Green Software Foundation](https://img.youtube.com/vi/5WImTN8840E/0.jpg)](https://www.youtube.com/watch?v=5WImTN8840E)
+[![How to use the Impact Framework from the Green Software Foundation](readme-vid-thumb.jpg)](https://www.youtube.com/watch?v=5WImTN8840E)
 
 ## Running Impact Framework Getting Started Pipeline
 
