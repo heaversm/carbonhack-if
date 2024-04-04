@@ -1,9 +1,5 @@
 name: My Manifest File
 description: My First Manifest File 💚
-# aggregation:
-#   metrics:
-#     - 'carbon'
-#   type: 'both'
 initialize:
   outputs: ['yaml']
   plugins:
