@@ -2,7 +2,6 @@
   "dependencies": {
     "@grnsft/if": "^0.3.1",
     "@grnsft/if-plugins": "^0.3.0",
-    "@grnsft/if-unofficial-plugins": "^0.3.0",
-    "@wr24-greenit/if-webpage-models": "github:wr24-greenit/if-webpage-models"
+    "@grnsft/if-unofficial-plugins": "^0.3.0"
   }
 }

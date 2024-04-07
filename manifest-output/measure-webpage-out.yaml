@@ -1,0 +1,67 @@
+name: measure-webpage-demo
+description: example manifest for estimating carbon emissions of a webpage
+tags: null
+initialize:
+  plugins:
+    timer-start:
+      path: '@wr24-greenit/if-webpage-plugins'
+      method: TimerStart
+    timer-stop:
+      path: '@wr24-greenit/if-webpage-plugins'
+      method: TimerStop
+    green-hosting:
+      path: '@wr24-greenit/if-webpage-plugins'
+      method: GreenHosting
+    measure-webpage:
+      path: '@wr24-greenit/if-webpage-plugins'
+      method: MeasureWebpage
+    co2js:
+      path: '@wr24-greenit/if-webpage-plugins'
+      method: Co2js
+      global-config:
+        options:
+          firstVisitPercentage: 0.9
+          returnVisitPercentage: 0.1
+  outputs:
+    - yaml
+if-version: v0.3.1
+tree:
+  children:
+    child:
+      pipeline:
+        - timer-start
+        - measure-webpage
+        - timer-stop
+        - green-hosting
+        - co2js
+      config:
+        co2js:
+          type: swd
+        measure-webpage:
+          lighthouse: true
+          scrollToBottom: true
+      inputs:
+        - timestamp: '2024-01-01T00:00:00Z'
+          duration: 1
+          url: https://www.tngtech.com
+          resets:
+            - true
+      outputs:
+        - timestamp: '2024-04-07T03:11:55.236Z'
+          duration: 23.152
+          url: https://www.tngtech.com
+          network/data/bytes: 553344
+          network/data/resources/bytes:
+            document: 10442
+            stylesheet: 9885
+            image: 411220
+            script: 57671
+            font: 61326
+            other: 2342
+            manifest: 458
+          lighthouse-report: >-
+            lighthouse-report-https___www.tngtech.com-2024-04-07T03_11_55.236Z.html
+          options:
+            dataReloadRatio: 0.01848759541984733
+          green-web-host: true
+          carbon-operational: 0.14453567119926
