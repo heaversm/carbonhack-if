@@ -1,0 +1,307 @@
+{
+  "plugins": {
+    "cloud-metadata": {
+      "name": "Cloud Metadata",
+      "description": "determine an instance's physical processor and thermal design power based on its instance",
+      "code-url": "https://github.com/Green-Software-Foundation/if-plugins/blob/main/src/lib/cloud-metadata",
+      "website-url": "https://github.com/Green-Software-Foundation/if-plugins/blob/main/src/lib/cloud-metadata/README.md",
+      "config": null,
+      "inputs": [
+        {
+          "name": "cloud/vendor",
+          "type": "string",
+          "units": "",
+          "description": "The cloud platform provider",
+          "example": "aws, azure, gcp",
+          "required": true
+        },
+        {
+          "name": "cloud/instance_type",
+          "type": "string",
+          "units": "",
+          "description": "the name of the specific instance being used",
+          "example": "m5n.large",
+          "required": true
+        },
+        {
+          "name": "timestamp",
+          "type": "string",
+          "units": "ISO 8061 string",
+          "description": "when the observation occurred",
+          "example": "2023-07-06T00:01",
+          "required": true
+        },
+        {
+          "name": "duration",
+          "type": "integer",
+          "units": "seconds",
+          "description": "number of seconds the observation spans",
+          "example": 10,
+          "required": true
+        }
+      ],
+
+      "outputs": [
+        {
+          "name": "timestamp",
+          "type": "string",
+          "units": "ISO 8061 string",
+          "description": "when the observation occurred",
+          "example": "2023-07-06T00:01"
+        },
+        {
+          "name": "duration",
+          "type": "integer",
+          "units": "seconds",
+          "description": "number of seconds the observation spans",
+          "example": 10
+        },
+        {
+          "name": "cloud/vendor",
+          "type": "string",
+          "units": "",
+          "description": "The cloud platform provider",
+          "example": "aws, azure, gcp"
+        },
+        {
+          "name": "cloud/instance_type",
+          "type": "string",
+          "units": "",
+          "description": "the name of the specific instance being used",
+          "example": "m5n.large"
+        },
+        {
+          "name": "vcpus-allocated",
+          "type": "int",
+          "units": "",
+          "description": "number of vCPUs allocated to this instance",
+          "example": 64
+        },
+        {
+          "name": "vcpus-total",
+          "type": "int",
+          "units": "",
+          "description": "total number of vCPUs available to this instance",
+          "example": 64
+        },
+        {
+          "name": "memory-available",
+          "type": "int",
+          "units": "GB",
+          "description": "total memory available on this instance, in GB",
+          "example": 64
+        },
+        {
+          "name": "physical-processor",
+          "type": "string",
+          "units": "",
+          "description": "name of the physical processor used by this instance",
+          "example": "Intel Xeon Platinum 8175M"
+        },
+        {
+          "name": "cpu/thermal-design-power",
+          "type": "integer",
+          "units": "Watts",
+          "description": "the thermal design power of the processor",
+          "example": 150
+        }
+      ],
+      "data-sources": [
+        {
+          "name": "AWS",
+          "description": "AWS instance types",
+          "url": "https://aws.amazon.com/ec2/instance-types/"
+        },
+        {
+          "name": "Azure",
+          "description": "Azure instance types",
+          "url": "https://docs.microsoft.com/en-us/azure/virtual-machines/sizes"
+        },
+        {
+          "name": "GCP",
+          "description": "GCP instance types",
+          "url": "https://cloud.google.com/compute/docs/machine-types"
+        },
+        {
+          "name": "Cloud Carbon Footprint",
+          "description": "allows determination of cpu for type of instance in a cloud and can be invoked as part of a plugin pipeline defined in a manifest.",
+          "url": "https://www.cloudcarbonfootprint.org/"
+        }
+      ]
+    },
+    "coefficient": {
+      "name": "Coefficient",
+      "description": "a generic plugin for multiplying a value in an input array by a given coefficient. You provide the name of the value you want to multiply, a coefficient value, and a name to use to append the product to the output array.",
+      "code-url": "https://github.com/Green-Software-Foundation/if-plugins/tree/main/src/lib/coefficient",
+      "website-url": "https://github.com/Green-Software-Foundation/if-plugins/tree/main/src/lib/coefficient/README.md",
+      "config": {
+        "input-parameter": {
+          "type": "string",
+          "units": "",
+          "description": "a string matching an existing key in the inputs array from the manifest tree",
+          "example": "carbon",
+          "required": true
+        },
+        "coefficient": {
+          "type": "float",
+          "units": "",
+          "description": "a value to multiply the input parameter by",
+          "example": 10,
+          "required": true
+        },
+        "output-parameter": {
+          "type": "string",
+          "units": "",
+          "description": "the product of all input-parameters with the parameter name defined by output-parameter in global config",
+          "example": "carbon-product",
+          "required": true
+        }
+      },
+      "inputs": [
+        {
+          "carbon": 30
+        }
+      ],
+      "outputs": [
+        {
+          "name": "carbon-product",
+          "type": "int",
+          "units": "",
+          "description": "product of input and coefficient",
+          "example": 90
+        }
+      ],
+      "data-sources": []
+    },
+    "csv-export": {
+      "name": "CSV Export",
+      "description": "exports your data to a CSV file. Takes any stanard IF imports.",
+      "code-url": "https://github.com/Green-Software-Foundation/if-plugins/blob/main/src/lib/csv-export",
+      "website-url": "https://github.com/Green-Software-Foundation/if-plugins/blob/main/src/lib/csv-export/README.md",
+      "config": {
+        "output-path": {
+          "type": "string",
+          "units": "",
+          "description": "the path to the output file",
+          "example": "/path/to/output.csv",
+          "required": true
+        },
+        "headers": {
+          "type": "array",
+          "units": "",
+          "description": "A list of headers to extract from the inputs to write as columns in the csv file. An empty list of headers will write all fields provided as inputs to the pluginParams. The default list of headers is empty therefore all input data will be written to the csv file.",
+          "example": "- timestamp\n- duration\n- carbon\n- energy",
+          "required": false
+        }
+      },
+      "inputs": [],
+      "outputs": "--output /path/to/output.csv",
+      "data-sources": [
+        {
+          "name": "AWS",
+          "description": "AWS instance types",
+          "url": "https://aws.amazon.com/ec2/instance-types/"
+        },
+        {
+          "name": "Azure",
+          "description": "Azure instance types",
+          "url": "https://docs.microsoft.com/en-us/azure/virtual-machines/sizes"
+        },
+        {
+          "name": "GCP",
+          "description": "GCP instance types",
+          "url": "https://cloud.google.com/compute/docs/machine-types"
+        },
+        {
+          "name": "Cloud Carbon Footprint",
+          "description": "allows determination of cpu for type of instance in a cloud and can be invoked as part of a plugin pipeline defined in a manifest.",
+          "url": "https://www.cloudcarbonfootprint.org/"
+        }
+      ]
+    },
+    "divide": {
+      "name": "Divide",
+      "description": "divide is a generic plugin for doing arithmetic division of two values in an input array. You provide the names of the values you want to divide, and a name to use to add the divide to the output array. For example, boavizta-cpu need cpu/number-cores to work, however cloud-metadata returns vcpus-allocated, to get number of cores you divide vcpus-allocated by 2.",
+      "code-url": "https://github.com/Green-Software-Foundation/if-plugins/tree/main/src/lib/divide",
+      "website-url": "https://github.com/Green-Software-Foundation/if-plugins/tree/main/src/lib/divide/README.md",
+      "config": {
+        "numerator": {
+          "name": "Numerator",
+          "type": "string",
+          "description": "a parameter by a specific configured number",
+          "example": "vcpus-allocated"
+        },
+        "denominator": {
+          "name": "Denominator",
+          "type": "float",
+          "description": "a parameter by a specific configured number or the number by which numerator is divided",
+          "example": 2
+        },
+        "output": {
+          "name": "Output",
+          "type": "string",
+          "description": "the number to a configured output parameter",
+          "example": "cpu/number-cores"
+        }
+      },
+      "inputs": [{ "vcpus-allocated": 24 }],
+      "outputs": [
+        {
+          "name": "divide",
+          "type": "float",
+          "units": "",
+          "description": "input divided by denominator",
+          "example": 12
+        }
+      ],
+      "data-sources": []
+    },
+    "e-mem": {
+      "name": "E-MEM (energy due to memory)",
+      "description": "e-mem simply multiples the amount of memory being used by a energy-per-gb (0.000392 kWh/GB) to yield memory/energy.",
+      "code-url": "https://github.com/Green-Software-Foundation/if-plugins/tree/main/src/lib/e-mem",
+      "website-url": "https://github.com/Green-Software-Foundation/if-plugins/tree/main/src/lib/e-mem/README.md",
+      "config": {
+        "energy-per-gb": {
+          "type": "float",
+          "units": "kWh/GB",
+          "description": "the amount of energy used by memory per GB",
+          "example": 0.000392,
+          "required": true
+        }
+      },
+      "inputs": [
+        {
+          "name": "memory/utilization",
+          "type": "int",
+          "units": "%",
+          "description": "percentage of the total available memory being used in the input period",
+          "example": 80,
+          "required": true
+        },
+        {
+          "name": "memory/capacity",
+          "type": "int",
+          "units": "GB",
+          "description": "the total amount of memory available, in GB",
+          "example": 16,
+          "required": true
+        }
+      ],
+      "outputs": [
+        {
+          "name": "memory/energy",
+          "type": "string",
+          "units": "kWh",
+          "description": "energy used by memory, in kWh",
+          "example": 0.0008
+        }
+      ],
+      "data-sources": [{
+        "name": "Cloud Carbon Footprint",
+        "description": "rationale for the energy per GB coefficient",
+        "url": "https://www.cloudcarbonfootprint.org/docs/methodology/#memory"
+      }]
+    }
+  }
+}
