@@ -1,5 +1,7 @@
 # Impact Framework
 
+For an overview of the impact Framework, [check out our wiki](https://github.com/heaversm/carbonhack-if/wiki)
+
 [![How to use the Impact Framework from the Green Software Foundation](readme-vid-thumb.jpg)](https://www.youtube.com/watch?v=5WImTN8840E)
 
 ## Running Impact Framework Getting Started Pipeline
