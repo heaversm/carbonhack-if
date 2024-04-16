@@ -1,0 +1,30 @@
+name: e-net-demo
+description: null
+tags: null
+initialize:
+  plugins:
+    e-net:
+      path: '@grnsft/if-plugins'
+      method: ENet
+      global-config:
+        energy-per-gb: 0.02
+  outputs:
+    - yaml
+if-version: v0.3.1
+tree:
+  children:
+    child:
+      pipeline:
+        - e-net
+      config: null
+      inputs:
+        - timestamp: 2023-08-06T00:00
+          duration: 3600
+          network/data-in: 1
+          network/data-out: 2
+      outputs:
+        - timestamp: 2023-08-06T00:00
+          duration: 3600
+          network/data-in: 1
+          network/data-out: 2
+          network/energy: 0.06

@@ -1,0 +1,31 @@
+name: divide-demo
+description: null
+tags: null
+initialize:
+  plugins:
+    divide:
+      path: '@grnsft/if-plugins'
+      method: Divide
+      global-config:
+        numerator: vcpus-allocated
+        denominator: 2
+        output: cpu/number-cores
+  outputs:
+    - yaml
+if-version: v0.3.1
+tree:
+  children:
+    child:
+      pipeline:
+        - divide
+      config:
+        divide: null
+      inputs:
+        - timestamp: 2023-08-06T00:00
+          duration: 3600
+          vcpus-allocated: 24
+      outputs:
+        - timestamp: 2023-08-06T00:00
+          duration: 3600
+          vcpus-allocated: 24
+          cpu/number-cores: 12

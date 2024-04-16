@@ -1,0 +1,176 @@
+name: mock-observation-demo
+description: example invoking mock-observation plugin
+tags: null
+initialize:
+  plugins:
+    mock-observations:
+      path: '@grnsft/if-plugins'
+      method: MockObservations
+      global-config:
+        timestamp-from: 2023-07-06T00:00
+        timestamp-to: 2023-07-06T00:10
+        duration: 60
+        components:
+          - instance-type: A1
+          - instance-type: B1
+        generators:
+          common:
+            region: uk-west
+            common-key: common-val
+          randint:
+            cpu/utilization:
+              min: 1
+              max: 99
+            memory/utilization:
+              min: 1
+              max: 99
+  outputs:
+    - yaml
+if-version: v0.3.1
+tree:
+  children:
+    child:
+      pipeline:
+        - mock-observations
+      inputs: null
+      outputs:
+        - timestamp: '2023-07-06T00:00:00.000Z'
+          duration: 60
+          instance-type: A1
+          region: uk-west
+          common-key: common-val
+          cpu/utilization: 71
+          memory/utilization: 61
+        - timestamp: '2023-07-06T00:01:00.000Z'
+          duration: 60
+          instance-type: A1
+          region: uk-west
+          common-key: common-val
+          cpu/utilization: 43
+          memory/utilization: 7
+        - timestamp: '2023-07-06T00:02:00.000Z'
+          duration: 60
+          instance-type: A1
+          region: uk-west
+          common-key: common-val
+          cpu/utilization: 34
+          memory/utilization: 45
+        - timestamp: '2023-07-06T00:03:00.000Z'
+          duration: 60
+          instance-type: A1
+          region: uk-west
+          common-key: common-val
+          cpu/utilization: 21
+          memory/utilization: 48
+        - timestamp: '2023-07-06T00:04:00.000Z'
+          duration: 60
+          instance-type: A1
+          region: uk-west
+          common-key: common-val
+          cpu/utilization: 79
+          memory/utilization: 84
+        - timestamp: '2023-07-06T00:05:00.000Z'
+          duration: 60
+          instance-type: A1
+          region: uk-west
+          common-key: common-val
+          cpu/utilization: 69
+          memory/utilization: 34
+        - timestamp: '2023-07-06T00:06:00.000Z'
+          duration: 60
+          instance-type: A1
+          region: uk-west
+          common-key: common-val
+          cpu/utilization: 28
+          memory/utilization: 52
+        - timestamp: '2023-07-06T00:07:00.000Z'
+          duration: 60
+          instance-type: A1
+          region: uk-west
+          common-key: common-val
+          cpu/utilization: 18
+          memory/utilization: 77
+        - timestamp: '2023-07-06T00:08:00.000Z'
+          duration: 60
+          instance-type: A1
+          region: uk-west
+          common-key: common-val
+          cpu/utilization: 73
+          memory/utilization: 80
+        - timestamp: '2023-07-06T00:09:00.000Z'
+          duration: 60
+          instance-type: A1
+          region: uk-west
+          common-key: common-val
+          cpu/utilization: 60
+          memory/utilization: 18
+        - timestamp: '2023-07-06T00:00:00.000Z'
+          duration: 60
+          instance-type: B1
+          region: uk-west
+          common-key: common-val
+          cpu/utilization: 52
+          memory/utilization: 46
+        - timestamp: '2023-07-06T00:01:00.000Z'
+          duration: 60
+          instance-type: B1
+          region: uk-west
+          common-key: common-val
+          cpu/utilization: 58
+          memory/utilization: 96
+        - timestamp: '2023-07-06T00:02:00.000Z'
+          duration: 60
+          instance-type: B1
+          region: uk-west
+          common-key: common-val
+          cpu/utilization: 54
+          memory/utilization: 88
+        - timestamp: '2023-07-06T00:03:00.000Z'
+          duration: 60
+          instance-type: B1
+          region: uk-west
+          common-key: common-val
+          cpu/utilization: 81
+          memory/utilization: 56
+        - timestamp: '2023-07-06T00:04:00.000Z'
+          duration: 60
+          instance-type: B1
+          region: uk-west
+          common-key: common-val
+          cpu/utilization: 81
+          memory/utilization: 98
+        - timestamp: '2023-07-06T00:05:00.000Z'
+          duration: 60
+          instance-type: B1
+          region: uk-west
+          common-key: common-val
+          cpu/utilization: 87
+          memory/utilization: 82
+        - timestamp: '2023-07-06T00:06:00.000Z'
+          duration: 60
+          instance-type: B1
+          region: uk-west
+          common-key: common-val
+          cpu/utilization: 97
+          memory/utilization: 27
+        - timestamp: '2023-07-06T00:07:00.000Z'
+          duration: 60
+          instance-type: B1
+          region: uk-west
+          common-key: common-val
+          cpu/utilization: 63
+          memory/utilization: 79
+        - timestamp: '2023-07-06T00:08:00.000Z'
+          duration: 60
+          instance-type: B1
+          region: uk-west
+          common-key: common-val
+          cpu/utilization: 19
+          memory/utilization: 54
+        - timestamp: '2023-07-06T00:09:00.000Z'
+          duration: 60
+          instance-type: B1
+          region: uk-west
+          common-key: common-val
+          cpu/utilization: 96
+          memory/utilization: 5

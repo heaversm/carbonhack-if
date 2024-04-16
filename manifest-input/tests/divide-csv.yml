@@ -1,0 +1,34 @@
+name: divide-demo
+description:
+tags:
+initialize:
+  outputs:
+    - csv
+  plugins:
+    csv-exporter:
+      method: CsvExport
+      path: '@grnsft/if-plugins'
+    divide:
+      method: Divide
+      path: '@grnsft/if-plugins'
+      global-config:
+        numerator: vcpus-allocated
+        denominator: 2
+        output: cpu/number-cores
+tree:
+  children:
+    child:
+      pipeline:
+        - divide
+        - csv-exporter
+      config:
+        csv-exporter:
+          output-path: manifest-output/tests/divide-csv-out.csv
+          headers:
+            - timestamp
+            - duration
+            - cpu/number-cores
+      inputs:
+        - timestamp: 2023-08-06T00:00
+          duration: 3600
+          vcpus-allocated: 24
