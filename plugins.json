@@ -26,7 +26,7 @@
         {
           "name": "timestamp",
           "type": "string",
-          "units": "ISO 8061 string",
+          "units": "ISO 8061 timestamp",
           "description": "when the observation occurred",
           "example": "2023-07-06T00:01",
           "required": true
@@ -45,7 +45,7 @@
         {
           "name": "timestamp",
           "type": "string",
-          "units": "ISO 8061 string",
+          "units": "ISO 8061 timestamp",
           "description": "when the observation occurred",
           "example": "2023-07-06T00:01"
         },
@@ -72,21 +72,21 @@
         },
         {
           "name": "vcpus-allocated",
-          "type": "int",
+          "type": "integer",
           "units": "",
           "description": "number of vCPUs allocated to this instance",
           "example": 64
         },
         {
           "name": "vcpus-total",
-          "type": "int",
+          "type": "integer",
           "units": "",
           "description": "total number of vCPUs available to this instance",
           "example": 64
         },
         {
           "name": "memory-available",
-          "type": "int",
+          "type": "integer",
           "units": "GB",
           "description": "total memory available on this instance, in GB",
           "example": 64
@@ -164,8 +164,8 @@
       ],
       "outputs": [
         {
-          "name": "carbon-product",
-          "type": "int",
+          "name": "[output-parameter]",
+          "type": "float",
           "units": "",
           "description": "product of input and coefficient",
           "example": 90
@@ -273,7 +273,7 @@
       "inputs": [
         {
           "name": "memory/utilization",
-          "type": "int",
+          "type": "integer",
           "units": "%",
           "description": "percentage of the total available memory being used in the input period",
           "example": 80,
@@ -281,7 +281,7 @@
         },
         {
           "name": "memory/capacity",
-          "type": "int",
+          "type": "integer",
           "units": "GB",
           "description": "the total amount of memory available, in GB",
           "example": 16,
@@ -291,17 +291,138 @@
       "outputs": [
         {
           "name": "memory/energy",
-          "type": "string",
+          "type": "float",
           "units": "kWh",
           "description": "energy used by memory, in kWh",
           "example": 0.0008
         }
       ],
-      "data-sources": [{
-        "name": "Cloud Carbon Footprint",
-        "description": "rationale for the energy per GB coefficient",
-        "url": "https://www.cloudcarbonfootprint.org/docs/methodology/#memory"
-      }]
+      "data-sources": [
+        {
+          "name": "Cloud Carbon Footprint",
+          "description": "rationale for the energy per GB coefficient",
+          "url": "https://www.cloudcarbonfootprint.org/docs/methodology/#memory"
+        }
+      ]
+    },
+    "e-net": {
+      "name": "E-MEM (energy due to networking)",
+      "description": "e-net simply multiplies the amount of data transferred (GB) by a coefficient (kWh/GB) to yield network/energy.",
+      "code-url": "https://github.com/Green-Software-Foundation/if-plugins/blob/main/src/lib/e-net/",
+      "website-url": "https://github.com/Green-Software-Foundation/if-plugins/blob/main/src/lib/e-net/README.md",
+      "config": {
+        "energy-per-gb": {
+          "type": "float",
+          "units": "kWh/GB",
+          "description": "coefficient for converting data transferred to energy, in kWh/GB. coefficient for converting data transferred to energy, in kWh/GB",
+          "example": 0.02,
+          "required": false
+        }
+      },
+      "inputs": [
+        {
+          "name": "network/data-in",
+          "type": "float",
+          "units": "GB",
+          "description": "inbound data in GB",
+          "example": 1,
+          "required": true
+        },
+        {
+          "name": "network/data-out",
+          "type": "float",
+          "units": "GB",
+          "description": "outbound data in GB",
+          "example": 2,
+          "required": true
+        }
+      ],
+      "outputs": [
+        {
+          "name": "network/energy",
+          "type": "float",
+          "units": "kWh",
+          "description": "energy used by networking, in kWh",
+          "example": 0.06
+        }
+      ],
+      "data-sources": [
+        {
+          "name": "Cloud Carbon Footprint",
+          "description": "rationale for the energy per GB coefficient",
+          "url": "https://www.cloudcarbonfootprint.org/docs/methodology/#chosen-coefficient"
+        },
+        {
+          "name": "Cloud Carbon Footprint Networking Studies",
+          "description": "rationale for the energy per GB coefficient",
+          "url": "https://www.cloudcarbonfootprint.org/docs/methodology/#appendix-iv-recent-networking-studies"
+        }
+      ]
+    },
+    "mock-observations": {
+      "name": "Mock Observations",
+      "description": "A plugin for mocking observations (inputs) for testing and demo purposes",
+      "code-url": "https://github.com/Green-Software-Foundation/if-plugins/blob/main/src/lib/mock-observations/",
+      "website-url": "https://github.com/Green-Software-Foundation/if-plugins/blob/main/src/lib/mock-observations/README.md",
+      "config": {
+        "timestamp-from": {
+          "type": "string",
+          "units": "ISO 8061 timestamp",
+          "description": "when to start the mock observations",
+          "example": "2023-07-06T00:00",
+          "required": true
+        },
+        "timestamp-to": {
+          "type": "string",
+          "units": "ISO 8061 timestamp",
+          "description": "when to end the mock observations",
+          "example": "2023-07-06T00:10",
+          "required": true
+        },
+        "duration": {
+          "type": "integer",
+          "units": "seconds",
+          "description": "the duration of each observation",
+          "example": 60,
+          "required": true
+        },
+        "components": {
+          "type": "object",
+          "units": "key/value pair",
+          "description": "A tree of each component you want to measure and its mock values",
+          "example": "components:\n  - instance-type: A1\n  - instance-type: B1",
+          "required": true
+        },
+        "generators": {
+          "type": "object",
+          "units": "key/value pair",
+          "description": "A tree of each generator of the observations for your components",
+          "example": "generators:\n  common:\n    region: uk-west\n    common-key: common-val\n  randint:\n    cpu/utilization:\n      min: 1\n      max: 99",
+          "required": true
+        }
+      },
+      "inputs": [],
+      "outputs": [
+        {
+          "name": "network/energy",
+          "type": "float",
+          "units": "kWh",
+          "description": "energy used by networking, in kWh",
+          "example": 0.06
+        }
+      ],
+      "data-sources": [
+        {
+          "name": "Cloud Carbon Footprint",
+          "description": "rationale for the energy per GB coefficient",
+          "url": "https://www.cloudcarbonfootprint.org/docs/methodology/#chosen-coefficient"
+        },
+        {
+          "name": "Cloud Carbon Footprint Networking Studies",
+          "description": "rationale for the energy per GB coefficient",
+          "url": "https://www.cloudcarbonfootprint.org/docs/methodology/#appendix-iv-recent-networking-studies"
+        }
+      ]
     }
   }
 }
