@@ -72,6 +72,10 @@ In the root of this repo is a `plugins.json` file, which lists each Impact Frame
 
 This allows you to look in a single location to assess what plugins you might need in your pipeline and how to implement them.
 
+For an easy way to visual this data, you can head to [JSON Hero](https://jsonhero.io/j/MdGJbNg7RGLR) which can navigate this JSON via a visual, expandable UI tree.
+
+[![Plugin JSON navigator](wiki/if-plugins.jpg)](https://jsonhero.io/j/MdGJbNg7RGLR)
+
 ### Plugin Test Manifests
 
 Within the `manifest-input/tests` and `manifest-output/tests` folders are yaml files for each of the official IF plugins, which show a minimal implementation of that plugin if it were used in isolation, along with the output it would produce. They can be run the same way the sample website measurement manifest is run, for example:
