@@ -72,7 +72,7 @@ In the root of this repo is a `plugins.json` file, which lists each Impact Frame
 
 This allows you to look in a single location to assess what plugins you might need in your pipeline and how to implement them.
 
-For an easy way to visual this data, you can head to [JSON Hero](https://jsonhero.io/j/MdGJbNg7RGLR) which can navigate this JSON via a visual, expandable UI tree.
+For an easy way to visual this data, you can head to [this JSON Hero link](https://jsonhero.io/j/MdGJbNg7RGLR) which can navigate this JSON via a visual, expandable UI tree.
 
 [![Plugin JSON navigator](wiki/if-plugins.jpg)](https://jsonhero.io/j/MdGJbNg7RGLR)
 
