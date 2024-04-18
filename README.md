@@ -54,7 +54,35 @@ Run the `watt-login.py` script:
 
 ## Other Info
 
-### Relevant Plugins
+### Plugins.json
+
+In the root of this repo is a `plugins.json` file, which lists each Impact Framework plugin's metadata (such as where to find its source code, documentation, and data sources used for calculation), as well as all the information about its inputs, outputs, and required configuration.
+
+```json
+"config": {
+  "energy-per-gb": {
+    "type": "float",
+    "units": "kWh/GB",
+    "description": "the amount of energy used by memory per GB",
+    "example": 0.000392,
+    "required": true
+  }
+},
+```
+
+This allows you to look in a single location to assess what plugins you might need in your pipeline and how to implement them.
+
+### Plugin Test Manifests
+
+Within the `manifest-input/tests` and `manifest-output/tests` folders are yaml files for each of the official IF plugins, which show a minimal implementation of that plugin if it were used in isolation, along with the output it would produce. They can be run the same way the sample website measurement manifest is run, for example:
+
+```bash
+ie --manifest manifest-input/tests/mock-observations.yml --output manifest-output/tests/mock-observations-out
+```
+
+This can be helpful for getting a better sense of whether your plugin is configured properly for use in your pipeline, as well as understanding what sort of data it will produce as it relates to any other plugins you plan on using for your ultimate manifest file.
+
+### Relevant Plugins for Website Measurement
 
 * [Teads Curve](https://github.com/Green-Software-Foundation/if-unofficial-plugins/blob/main/src/lib/teads-curve/README.md) - estimates CPU usages across varying type of CPUs
 * [Watt Time](https://github.com/Green-Software-Foundation/if-unofficial-plugins/blob/main/src/lib/watt-time/README.md) - provides a way to calculate emissions for a given time in a specific geolocation.
